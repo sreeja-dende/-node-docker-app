@@ -6,7 +6,13 @@ pipeline {
         stage('Checkout from GitHub') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/sreeja-dende/-node-docker-app.git'
+                url: 'https://github.com/sreeja-dende/-node-docker-app.git'
+            }
+        }
+
+        stage('Clean Workspace') {
+            steps {
+                sh 'rm -rf node_modules'
             }
         }
 
@@ -18,26 +24,21 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh '''
-                docker build -t node-docker-app:${BUILD_NUMBER} .
-                
-                '''
+                sh 'docker build -t node-docker-app:${BUILD_NUMBER} .'
             }
         }
 
-        // stage('Push Docker Image') {
-        //     steps {
-        //         sh 'docker push laxmi916/node-docker-app:${BUILD_NUMBER}'
-        //     }
-        // }
-        
-        stage('Create container') {
+        stage('Remove Old Container') {
             steps {
-                sh 'docker run -d -p 3000:8080 node-docker-app:${BUILD_NUMBER}'
+                sh 'docker rm -f node-container || true'
             }
         }
 
-
+        stage('Create Container') {
+            steps {
+                sh 'docker run -d -p 3000:8080 --name node-container node-docker-app:${BUILD_NUMBER}'
+            }
+        }
 
     }
 }
