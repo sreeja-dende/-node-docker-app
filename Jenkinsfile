@@ -3,12 +3,12 @@ pipeline {
 
     stages {
 
-        /*stage('Checkout from GitHub') {
+        stage('Checkout from GitHub') {
             steps {
-                git branch: 'master',
-                    url: 'https://github.com/laxmi916/node-docker-app.git'
+                git branch: 'main',
+                    url: 'https://github.com/sreeja-dende/-node-docker-app.git'
             }
-        }*/
+        }
 
         stage('Install Dependencies') {
             steps {
@@ -20,20 +20,20 @@ pipeline {
             steps {
                 sh '''
                 docker build -t node-docker-app:${BUILD_NUMBER} .
-                docker tag node-docker-app:${BUILD_NUMBER} laxmi916/node-docker-app:${BUILD_NUMBER}
+                docker tag node-docker-app:${BUILD_NUMBER} node-docker-app:${BUILD_NUMBER}
                 '''
             }
         }
 
-        stage('Push Docker Image') {
-            steps {
-                sh 'docker push laxmi916/node-docker-app:${BUILD_NUMBER}'
-            }
-        }
+        // stage('Push Docker Image') {
+        //     steps {
+        //         sh 'docker push laxmi916/node-docker-app:${BUILD_NUMBER}'
+        //     }
+        // }
         
         stage('Create container') {
             steps {
-                sh 'docker run -d -p 3000:8080 laxmi916/node-docker-app:${BUILD_NUMBER}'
+                sh 'docker run -d -p 3000:8080 node-docker-app:${BUILD_NUMBER}'
             }
         }
 
