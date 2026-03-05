@@ -3,13 +3,6 @@ pipeline {
 
     stages {
 
-        stage('Checkout from GitHub') {
-            steps {
-                git branch: 'main',
-                url: 'https://github.com/sreeja-dende/-node-docker-app.git'
-            }
-        }
-
         stage('Clean Workspace') {
             steps {
                 sh 'rm -rf node_modules'
@@ -18,7 +11,10 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                sh '''
+                npm cache clean --force
+                npm ci
+                '''
             }
         }
 
@@ -28,14 +24,9 @@ pipeline {
             }
         }
 
-        stage('Remove Old Container') {
-            steps {
-                sh 'docker rm -f node-container || true'
-            }
-        }
-
         stage('Create Container') {
             steps {
+                sh 'docker rm -f node-container || true'
                 sh 'docker run -d -p 3000:8080 --name node-container node-docker-app:${BUILD_NUMBER}'
             }
         }
