@@ -3,12 +3,12 @@ pipeline {
 
     stages {
 
-        stage('Checkout from GitHub') {
+        /*stage('Checkout from GitHub') {
             steps {
                 git branch: 'master',
                     url: 'https://github.com/laxmi916/node-docker-app.git'
             }
-        }
+        }*/
 
         stage('Install Dependencies') {
             steps {
