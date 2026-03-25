@@ -6,7 +6,7 @@ pipeline {
         stage('Checkout from GitHub') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/Harika-Adepu/node-docker-app.git'
+                    url: 'https://github.com/sreeja-dende/-node-docker-app.git'
             }
         }
 
@@ -20,7 +20,7 @@ pipeline {
             steps {
                 sh '''
                 docker build -t node-docker-app:${BUILD_NUMBER} .
-                docker tag node-docker-app:${BUILD_NUMBER} Harika-Adepu/node-docker-app:${BUILD_NUMBER}
+                docker tag node-docker-app:${BUILD_NUMBER} sreeja-dende/node-docker-app:${BUILD_NUMBER}
                 '''
             }
         }
