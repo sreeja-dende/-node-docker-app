@@ -3,33 +3,41 @@ pipeline {
 
     stages {
 
-        stage('Clean Workspace') {
+        stage('Checkout from GitHub') {
             steps {
-                sh 'rm -rf node_modules'
+                git branch: 'main',
+                    url: 'https://github.com/Harika-Adepu/node-docker-app.git'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                sh '''
-                npm cache clean --force
-                npm ci
-                '''
+                sh 'npm install'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t node-docker-app:${BUILD_NUMBER} .'
+                sh '''
+                docker build -t node-docker-app:${BUILD_NUMBER} .
+                docker tag node-docker-app:${BUILD_NUMBER} Harika-Adepu/node-docker-app:${BUILD_NUMBER}
+                '''
             }
         }
 
-        stage('Create Container') {
+        // stage('Push Docker Image') {
+        //     steps {
+        //         sh 'docker push laxmi916/node-docker-app:${BUILD_NUMBER}'
+        //     }
+        // }
+        
+        stage('Create container') {
             steps {
-                sh 'docker rm -f node-container || true'
-                sh 'docker run -d -p 3000:8080 --name node-container node-docker-app:${BUILD_NUMBER}'
+                sh 'docker run -d -p 3000:8080 node-docker-app:${BUILD_NUMBER}'
             }
         }
+
+
 
     }
 }
