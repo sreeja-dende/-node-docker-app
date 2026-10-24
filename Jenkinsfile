@@ -6,7 +6,7 @@ pipeline {
         stage('Checkout from GitHub') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/Harika-Adepu/node-docker-app.git'
+                    url: 'https://github.com/sreeja-dende/-node-docker-app.git'
             }
         }
 
@@ -20,14 +20,14 @@ pipeline {
             steps {
                 sh '''
                 docker build -t node-docker-app:${BUILD_NUMBER} .
-                docker tag node-docker-app:${BUILD_NUMBER} Harika-Adepu/node-docker-app:${BUILD_NUMBER}
+                docker tag node-docker-app:${BUILD_NUMBER} sreeja919/node-docker-app:${BUILD_NUMBER}
                 '''
             }
         }
 
         // stage('Push Docker Image') {
         //     steps {
-        //         sh 'docker push laxmi916/node-docker-app:${BUILD_NUMBER}'
+        //         sh 'docker push sreeja919/node-docker-app:${BUILD_NUMBER}'
         //     }
         // }
         
